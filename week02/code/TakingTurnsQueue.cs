@@ -1,17 +1,8 @@
-/// <summary>
-/// This queue is circular.  When people are added via AddPerson, then they are added to the 
-/// back of the queue (per FIFO rules).  When GetNextPerson is called, the next person
-/// in the queue is saved to be returned and then they are placed back into the back of the queue.  Thus,
-/// each person stays in the queue and is given turns.  When a person is added to the queue, 
-/// a turns parameter is provided to identify how many turns they will be given.  If the turns is 0 or
-/// less than they will stay in the queue forever.  If a person is out of turns then they will 
-/// not be added back into the queue.
-/// </summary>
 public class TakingTurnsQueue
 {
-    private readonly PersonQueue _people = new();
+    private readonly Queue<Person> _people = new();
 
-    public int Length => _people.Length;
+    public int Length => _people.Count;
 
     /// <summary>
     /// Add new people to the queue with a name and number of turns
@@ -24,34 +15,32 @@ public class TakingTurnsQueue
         _people.Enqueue(person);
     }
 
-    /// <summary>
-    /// Get the next person in the queue and return them. The person should
-    /// go to the back of the queue again unless the turns variable shows that they 
-    /// have no more turns left.  Note that a turns value of 0 or less means the 
-    /// person has an infinite number of turns.  An error exception is thrown 
-    /// if the queue is empty.
-    /// </summary>
     public Person GetNextPerson()
     {
-        if (_people.IsEmpty())
+        if (_people.Count == 0)
         {
             throw new InvalidOperationException("No one in the queue.");
         }
-        else
+
+        // Remove first person from the queue
+        Person person = _people.Dequeue();
+
+        // If the person has turns > 0, decrease their turns by 1
+        if (person.Turns > 0)
         {
-            Person person = _people.Dequeue();
-            if (person.Turns > 1)
-            {
-                person.Turns -= 1;
-                _people.Enqueue(person);
-            }
-
-            return person;
+            person.Turns -= 1;  // Decrease turns only if turns > 0
         }
-    }
 
-    public override string ToString()
-    {
-        return _people.ToString();
+        // Re-enqueue the person if they still have turns > 0 or if they have infinite turns (turns <= 0)
+        if (person.Turns > 0 || person.Turns == -1)  // Ensure that people with <= 0 turns stay forever
+        {
+            _people.Enqueue(person);  // Re-add the person to the queue to maintain the circular behavior
+        }
+
+        return person;
     }
 }
+
+// THIS IS SOOO HARD ! ! ! ! !
+// THIS IS SOOO HARD ! ! ! ! !
+// THIS IS SOOO HARD ! ! ! ! !
