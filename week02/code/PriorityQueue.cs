@@ -17,23 +17,40 @@
 
     public string Dequeue()
     {
-        if (_queue.Count == 0) // Verify the queue is not empty
+        if (_queue.Count == 0) // Verificar si la cola está vacía
         {
             throw new InvalidOperationException("The queue is empty.");
         }
 
-        // Find the index of the item with the highest priority to remove
+        // Encuentra el índice del ítem con la prioridad más alta a eliminar
+        // find the index of the item with the highest priority to remove
+        // IF there are multiple items with the same priority, FIFO is used
+        // HERE IS THE SOLUTION
         var highPriorityIndex = 0;
-        for (int index = 1; index < _queue.Count - 1; index++)
+        for (int index = 1; index < _queue.Count; index++)
         {
-            if (_queue[index].Priority >= _queue[highPriorityIndex].Priority)
+            // Si se encuentra una prioridad más alta, actualizar el índice
+            if (_queue[index].Priority > _queue[highPriorityIndex].Priority)
+            {
                 highPriorityIndex = index;
+            }
+            // Si las prioridades son iguales, se sigue la regla FIFO
+            else if (_queue[index].Priority == _queue[highPriorityIndex].Priority && index < highPriorityIndex)
+            {
+                highPriorityIndex = index;
+            }
         }
 
-        // Remove and return the item with the highest priority
+        // Guardar el valor de la cola de prioridad que tiene la más alta prioridad
         var value = _queue[highPriorityIndex].Value;
+
+        // Eliminar el elemento de la cola
+        _queue.RemoveAt(highPriorityIndex);
+
+        // Devolver el valor del elemento eliminado
         return value;
     }
+
 
     public override string ToString()
     {
