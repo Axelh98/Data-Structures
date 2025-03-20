@@ -20,9 +20,39 @@ public static class SetsAndMaps
     /// </summary>
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
-    {
+
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+    {
+
+        // CREATING SETS FOR O(1) PERFORMANCE
+        HashSet<string> seenWords = new();
+        HashSet<string> symmetricPairs = new();
+
+
+        // LOOPING THROUGH THE WORDS
+        // IF THE LENGTH OF THE WORD IS 2, WE WILL CHECK IF THE REVERSED VERSION IS ALREADY IN THE SET
+        foreach (var word in words)
+        {
+            if (word.Length == 2) 
+            {
+                string reversed = new string(new char[] { word[1], word[0] }); // REVERSE THE WORD
+
+                // Si la versión invertida ya está en seenWords, encontramos un par simétrico
+                if (seenWords.Contains(reversed)) // IF THE REVERSED VERSION IS ALREADY IN THE SET
+                {
+                    // FORMATE THE PAIR
+                    string formattedPair = $"{word} & {reversed}";
+                    // TO AVOID DUPLICATES, WE WILL ADD THE PAIR TO THE SET ONLY IF IT IS NOT ALREADY IN THE SET
+                    string normalizedPair = word.CompareTo(reversed) < 0 ? formattedPair : $"{reversed} & {word}";
+
+                    symmetricPairs.Add(normalizedPair);
+                }
+
+                seenWords.Add(word);
+            }
+        }
+
+        return symmetricPairs.ToArray();    
     }
 
     /// <summary>
