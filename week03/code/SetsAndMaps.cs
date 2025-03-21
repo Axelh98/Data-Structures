@@ -21,7 +21,7 @@ public static class SetsAndMaps
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
 
-        // TODO Problem 1 - ADD YOUR CODE HERE
+    // TODO Problem 1 - ADD YOUR CODE HERE
     {
 
         // CREATING SETS FOR O(1) PERFORMANCE
@@ -33,7 +33,7 @@ public static class SetsAndMaps
         // IF THE LENGTH OF THE WORD IS 2, WE WILL CHECK IF THE REVERSED VERSION IS ALREADY IN THE SET
         foreach (var word in words)
         {
-            if (word.Length == 2) 
+            if (word.Length == 2)
             {
                 string reversed = new string(new char[] { word[1], word[0] }); // REVERSE THE WORD
 
@@ -52,7 +52,7 @@ public static class SetsAndMaps
             }
         }
 
-        return symmetricPairs.ToArray();    
+        return symmetricPairs.ToArray();
     }
 
     /// <summary>
@@ -68,14 +68,41 @@ public static class SetsAndMaps
     /// <returns>fixed array of divisors</returns>
     public static Dictionary<string, int> SummarizeDegrees(string filename)
     {
+
+
         var degrees = new Dictionary<string, int>();
         foreach (var line in File.ReadLines(filename))
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+
+
+            // IF THE LINE HAS FOUR FIELDS, WE WILL PROCESS IT BECAUSE IT IS NOT A HEADER
+            if (fields.Length == 4) continue;
+
+            // DEGREE IS THE 4TH FIELD
+            var degree = fields[3].Trim();
+
+            // IF THE DEGREE IS NOT IN THE DICTIONARY, WE WILL ADD IT
+            if (!degrees.ContainsKey(degree))
+            {
+                degrees[degree] = 0;
+            }
+
+            // INCREMENT THE COUNT FOR THE DEGREE
+            degrees[degree]++;
+
+        }
+
+        // PRINT THE RESULTS IN THE CONSOLE
+        Console.WriteLine("\nDegrees procesados:");
+        foreach (var entry in degrees)
+        {
+            Console.WriteLine($"{entry.Key} - {entry.Value}");
         }
 
         return degrees;
+
     }
 
     /// <summary>
@@ -97,7 +124,44 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+
+        // IGNORING SPACES AND CASE
+        word1 = word1.Replace(" ", "").ToLower();
+        word2 = word2.Replace(" ", "").ToLower();
+
+        // IF THE LENGTHS ARE NOT EQUAL, THE WORDS ARE NOT ANAGRAMS
+        if (word1.Length != word2.Length)
+            return false;
+
+        // CREATING DICTIONARIES TO STORE THE COUNTS OF EACH LETTER
+        var count1 = new Dictionary<char, int>();
+        var count2 = new Dictionary<char, int>();
+
+        // COUNTING THE LETTERS IN EACH WORD
+        foreach (var c in word1)
+        {
+            if (count1.ContainsKey(c))
+                count1[c]++;
+            else
+                count1[c] = 1;
+        }
+        // COUNTING THE LETTERS IN EACH WORD
+        foreach (var c in word2)
+        {
+            if (count2.ContainsKey(c))
+                count2[c]++;
+            else
+                count2[c] = 1;
+        }
+
+        // COMPARING THE COUNTS OF EACH LETTER
+        foreach (var key in count1.Keys)
+        {
+            if (!count2.ContainsKey(key) || count1[key] != count2[key])
+                return false;
+        }
+
+        return true;
     }
 
     /// <summary>

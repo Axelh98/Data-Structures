@@ -30,18 +30,62 @@ public class Maze
     /// Check to see if you can move left.  If you can, then move.  If you
     /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
     /// </summary>
+    /// 
+
+
+
+    
+
     public void MoveLeft()
     {
-        // FILL IN CODE
+
+        // VERIFY THAT THE CURRENT POSITION IS IN THE MAZE
+        if (!_mazeMap.ContainsKey((_currX, _currY)))
+        {
+            throw new InvalidOperationException("Current position is not in the maze.");
+        }
+
+        var directions = _mazeMap[(_currX, _currY)];
+
+        // VERIFY THAT THERE IS A WALL IN THE DIRECTION WE ARE TRYING TO MOVE
+        if (!directions[0])
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+
+        // MOVE THE CURSOR
+        _currX--;
+
     }
 
     /// <summary>
     /// Check to see if you can move right.  If you can, then move.  If you
     /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
+
+    
+
     /// </summary>
+    /// 
+
+
     public void MoveRight()
     {
-        // FILL IN CODE
+        
+        if (!_mazeMap.ContainsKey((_currX, _currY)))
+        {
+            throw new InvalidOperationException("Current position is not in the maze.");
+        }
+
+        var directions = _mazeMap[(_currX, _currY)];
+        // VERIFY THAT THERE IS A WALL IN THE DIRECTION WE ARE TRYING TO MOVE
+        if (!directions[1])
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+
+        // MOVE THE CURSOR
+        _currX++;
+
     }
 
     /// <summary>
@@ -50,7 +94,20 @@ public class Maze
     /// </summary>
     public void MoveUp()
     {
-        // FILL IN CODE
+        if (!_mazeMap.ContainsKey((_currX, _currY)))
+        {
+            throw new InvalidOperationException("Current position is not in the maze.");
+        }
+
+        var directions = _mazeMap[(_currX, _currY)];
+        // VERIFY THAT THERE IS A WALL IN THE DIRECTION WE ARE TRYING TO MOVE
+        if (!directions[2])
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+
+        // MOVE THE CURSOR
+        _currY--;
     }
 
     /// <summary>
@@ -59,7 +116,20 @@ public class Maze
     /// </summary>
     public void MoveDown()
     {
-        // FILL IN CODE
+        if (!_mazeMap.ContainsKey((_currX, _currY)))
+        {
+            throw new InvalidOperationException("Current position is not in the maze.");
+        }
+
+        var directions = _mazeMap[(_currX, _currY)];
+        // VERIFY THAT THERE IS A WALL IN THE DIRECTION WE ARE TRYING TO MOVE
+        if (!directions[3])
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+
+        // MOVE THE CURSOR
+        _currY++;
     }
 
     public string GetStatus()
