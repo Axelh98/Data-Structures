@@ -125,7 +125,10 @@ public static class Recursion
             return remember[s]; // Return the vlue if it is already calclated
 
         // Solve using recursion
-        decimal ways = CountWaysToClimb(s - 1) + CountWaysToClimb(s - 2) + CountWaysToClimb(s - 3);
+        decimal ways = CountWaysToClimb(s - 1, remember) +
+                       CountWaysToClimb(s - 2, remember) +
+                       CountWaysToClimb(s - 3, remember);
+
 
         remember[s] = ways; // Store the result in the dictionary
         return ways;
@@ -208,7 +211,7 @@ public static class Recursion
                     SolveMaze(results, maze, newX, newY, new List<ValueTuple<int, int>>(currPath));
                 }
             }
-            
+
         }
 
         // THIS HAS BEEN VERY CHALLENGING
